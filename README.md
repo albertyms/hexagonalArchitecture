@@ -23,7 +23,7 @@ Before you begin, ensure you have met the following requirements:
 
 To clone this repository, run the following command:
 
-```bash
+```
 git clone https://github.com/albertyms/hexagonalArchitecture.git
 
 cd hexagonalArchitecture
@@ -45,4 +45,25 @@ mvn spring-boot:run
 
 ```
 mvn test
+```
+
+API Get prices
+-----
+
+Get prices by parameters
+
+Request:
+```
+GET localhost:8080/api/prices?brandId=1&productId=35455&date=2020-06-15T16:00:00
+```
+
+Response:
+```
+{
+    "id": 4,
+    "brandId": 1,
+    "price": 38.95,
+    "startDate": "2020-06-15T16:00:00",
+    "endDate": "2020-12-31T23:59:59"
+}
 ```
