@@ -1,13 +1,13 @@
 package com.test.hexagonal.infrastructure.persistence.adapter;
 
-import com.test.hexagonal.domain.model.Brand;
+import com.test.hexagonal.application.mapper.PriceMapper;
 import com.test.hexagonal.domain.model.Price;
 import com.test.hexagonal.domain.repository.PriceRepository;
-import com.test.hexagonal.infrastructure.persistence.entity.PriceEntity;
 import com.test.hexagonal.infrastructure.persistence.repository.JpaPriceRepository;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PricePersistenceAdapter implements PriceRepository {
     private final JpaPriceRepository jpaPriceRepository;
@@ -17,23 +17,8 @@ public class PricePersistenceAdapter implements PriceRepository {
     }
 
     @Override
-    public Optional<Price> findPriceByBrandAndProductAndDate(Long brandId, Long productId, LocalDateTime date) {
-        return jpaPriceRepository.findFirstByBrandIdAndProductIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(brandId, productId, date, date)
-                .map(this::toDomain);
-    }
+    public List<Price> findPriceByBrandAndProductAndDate(Long brandId, Long productId, LocalDateTime date) {
+        return jpaPriceRepository.findByBrandIdAndProductIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(brandId, productId, date, date).stream().map(PriceMapper::toDomain).collect(Collectors.toList());
 
-    private Price toDomain(PriceEntity entity) {
-        // Convert PriceEntity to Price (Domain object)
-        return new Price(
-                entity.getId(),
-                new Brand(entity.getBrand().getId(), entity.getBrand().getName()),
-                entity.getPriceList(),
-                entity.getProductId(),
-                entity.getPriority(),
-                entity.getPrice(),
-                entity.getCurrency(),
-                entity.getStartDate(),
-                entity.getEndDate()
-        );
     }
 }

@@ -4,9 +4,10 @@ import com.test.hexagonal.application.dto.PriceDTO;
 import com.test.hexagonal.application.mapper.PriceMapper;
 import com.test.hexagonal.domain.model.Price;
 import com.test.hexagonal.domain.repository.PriceRepository;
-import com.test.hexagonal.infrastructure.exception.PriceNotFoundException;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 public class PriceService {
@@ -17,10 +18,10 @@ public class PriceService {
     }
 
     public Optional<PriceDTO> findPrice(Long brandId, Long productId, LocalDateTime date) {
-        Optional<Price> price = priceRepository.findPriceByBrandAndProductAndDate(brandId, productId, date);
-        if (price.isEmpty()) {
-            throw new PriceNotFoundException(productId, brandId, date.toString());
+        List<Price> prices = priceRepository.findPriceByBrandAndProductAndDate(brandId, productId, date);
+        if (prices.isEmpty()) {
+            return Optional.empty();
         }
-        return price.map(PriceMapper::toDTO);
+        return prices.stream().max(Comparator.comparingInt(Price::getPriority)).map(PriceMapper::toDTO);
     }
 }

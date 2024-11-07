@@ -17,7 +17,7 @@ public class PriceEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id", nullable = false)
+    @JoinColumn(name = "BRAND_ID", nullable = false)
     private BrandEntity brand;
 
     @Column(name = "START_DATE", nullable = false)

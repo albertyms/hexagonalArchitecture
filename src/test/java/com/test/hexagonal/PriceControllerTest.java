@@ -18,7 +18,7 @@ public class PriceControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testGetPriceCase1() throws Exception {
+    void testGetPriceRequestAt10On14th() throws Exception {
         mockMvc.perform(get("/api/prices")
                         .param("brandId", "1")
                         .param("productId", "35455")
@@ -30,7 +30,7 @@ public class PriceControllerTest {
     }
 
     @Test
-    public void testGetPriceCase2() throws Exception {
+    void testGetPriceRequestAt16On14th() throws Exception {
         mockMvc.perform(get("/api/prices")
                         .param("brandId", "1")
                         .param("productId", "35455")
@@ -42,7 +42,7 @@ public class PriceControllerTest {
     }
 
     @Test
-    public void testGetPriceCase3() throws Exception {
+    void testGetPriceRequestAt21On14th() throws Exception {
         mockMvc.perform(get("/api/prices")
                         .param("brandId", "1")
                         .param("productId", "35455")
@@ -54,7 +54,7 @@ public class PriceControllerTest {
     }
 
     @Test
-    public void testGetPriceCase4() throws Exception {
+    void testGetPriceRequestAt10On15th() throws Exception {
         mockMvc.perform(get("/api/prices")
                         .param("brandId", "1")
                         .param("productId", "35455")
@@ -66,7 +66,7 @@ public class PriceControllerTest {
     }
 
     @Test
-    public void testGetPriceCase5() throws Exception {
+    void testGetPriceRequestAt21On16th() throws Exception {
         mockMvc.perform(get("/api/prices")
                         .param("brandId", "1")
                         .param("productId", "35455")
@@ -78,11 +78,20 @@ public class PriceControllerTest {
     }
 
     @Test
-    public void testGetPriceCase6() throws Exception {
+    void testGetPriceNotFound() throws Exception {
         mockMvc.perform(get("/api/prices")
                         .param("brandId", "7")
                         .param("productId", "35455")
                         .param("date", "2020-06-16T21:00:00"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testGetPriceBadRequest() throws Exception {
+        mockMvc.perform(get("/api/prices")
+                        .param("brandId", "test")
+                        .param("productId", "35455")
+                        .param("date", "2020-06-16T21:00:00"))
+                .andExpect(status().isBadRequest());
     }
 }
