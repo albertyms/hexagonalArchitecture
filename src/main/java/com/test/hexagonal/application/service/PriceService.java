@@ -19,9 +19,6 @@ public class PriceService {
 
     public Optional<PriceDTO> findPrice(Long brandId, Long productId, LocalDateTime date) {
         List<Price> prices = priceRepository.findPriceByBrandAndProductAndDate(brandId, productId, date);
-        if (prices.isEmpty()) {
-            return Optional.empty();
-        }
         return prices.stream().max(Comparator.comparingInt(Price::getPriority)).map(PriceMapper::toDTO);
     }
 }
