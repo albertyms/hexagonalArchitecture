@@ -100,5 +100,21 @@ public class PriceServiceTest {
 
     }
 
+    @Test
+    void testFindPrice_WhenPriceDoesNotExists_ShouldReturnEmptyList() {
+        Long brandId = 1L;
+        Long productId = 100L;
+        LocalDateTime date = LocalDateTime.of(2023, 7, 14, 16, 0);
+
+        List<Price> prices = new ArrayList<>();
+
+        when(priceRepository.findPriceByBrandAndProductAndDate(brandId, productId, date)).thenReturn(prices);
+
+        Optional<PriceDTO> result = priceService.findPrice(brandId, productId, date);
+
+        assertTrue(result.isEmpty(), "Not data was found");
+
+    }
+
 
 }
